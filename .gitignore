@@ -1,4 +1,5 @@
 # Project exclude paths
+out/*
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -22,7 +23,6 @@ buildNumber.properties
 bin
 build
 target
-dependency-reduced-pom.xml
 *.sublime-*
 /scratch
 .gradle
