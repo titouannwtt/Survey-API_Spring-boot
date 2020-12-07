@@ -1,5 +1,7 @@
 package fr.cactus_industries.restservice;
 
+import java.sql.SQLException;
+
 public class Greeting {
 
 	private final long id;
@@ -10,7 +12,9 @@ public class Greeting {
 		this.content = content;
 	}
 
-	public long getId() {
+	public long getId() throws SQLException {
+		Database db = new Database();
+		db.test();
 		return id;
 	}
 
