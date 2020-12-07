@@ -11,27 +11,28 @@ public class Database {
     public Database() {
         //On donne les variables pour la connexion à la base de données
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             this.con = DriverManager.getConnection(
-                    "jdbc:mysql://cactus-industries.fr/Users",
-                    "apiprogweb",
-                    "esieaprogweblagang");
+                    "jdbc:mysql://cerenity.net/basededonnees" /*ou "jdbc:mysql://cactus-industries.fr/Users" */,
+                    "progweb",
+                    "Esiea2020");
         }
         //En cas d'erreur
-        catch (SQLException e) {
+        catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     public void test() throws SQLException {
         //REQUETE
-        String query = "select ID, mail, login, pass from Users";
+        String query = "select id, mail, login, pass from USERS";
 
         //CONNEXION
         try (Statement stmt = this.con.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 //RECUPERATION DES DONNEES
-                int id = rs.getInt("ID");
+                int id = rs.getInt("id");
                 String mail = rs.getString("mail");
                 String login = rs.getString("login");
                 String pass = rs.getString("pass");
