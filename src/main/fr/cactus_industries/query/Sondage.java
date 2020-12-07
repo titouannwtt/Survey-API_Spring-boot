@@ -10,10 +10,11 @@ public class Sondage {
     private String nom;
     private String description;
     private int authorId;
-    private boolean sondagePrive;
+    private int sondagePrive;
+    //private int[] idOfUserCanVote;
 
     //Constructeur qui créer un sondage localement
-    public Sondage(int id, String nom, String description, int authorId, boolean sondagePrive) {
+    public Sondage(int id, String nom, String description, int authorId, int sondagePrive) {
         this.id = id;
         this.nom = nom;
         this.description = description;
@@ -21,7 +22,7 @@ public class Sondage {
     }
 
     //Constructeur qui créer un sondage localement et sur la bdd
-    public Sondage(String nom, String description, int authorId, boolean sondagePrive) {
+    /*public Sondage(String nom, String description, int authorId, boolean sondagePrive) {
         Database db = new Database();
         try {
             int numberOfSondage=db.getNumberOfSurvey();
@@ -38,7 +39,7 @@ public class Sondage {
         this.authorId = authorId;
         this.sondagePrive = sondagePrive;
         //db.createSondage(id, nom, description, authorId, sondagePrive);
-    }
+    }*/
 
     public int getId() {
         return id;
@@ -72,11 +73,11 @@ public class Sondage {
         this.authorId = authorId;
     }
 
-    public boolean isSondagePrive() {
+    public int isSondagePrive() {
         return sondagePrive;
     }
 
-    public void setSondagePrive(boolean sondagePrive) {
+    public void setSondagePrive(int sondagePrive) {
         this.sondagePrive = sondagePrive;
     }
 

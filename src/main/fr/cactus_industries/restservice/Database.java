@@ -23,6 +23,7 @@ public class Database {
         }
     }
 
+    /*
     public void test() throws SQLException {
         //REQUETE
         String query = "select id, mail, login, pass from USERS";
@@ -45,12 +46,12 @@ public class Database {
         catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public int getNumberOfSurvey() throws SQLException {
         int result = -1;
         //REQUETE
-        String query = "SELECT COUNT(*) FROM Sondages";
+        String query = "SELECT COUNT(*) FROM SONDAGES";
 
         //CONNEXION
         try (Statement stmt = this.con.createStatement()) {
@@ -69,32 +70,60 @@ public class Database {
         return result;
     }
 
-    /*public Sondage getSondageById(int id) throws SQLException {
-        String query = "select nom, description, authorId, responsesId, sondagePrive from Users where id="+id;
-
+    public Sondage getSondageById(int id) throws SQLException {
+        String query = "select nom, description, authorId, sondagePrive from Users where id="+id+";";
         //CONNEXION
         try (Statement stmt = this.con.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
+            if(rs.next()) {
                 //RECUPERATION DES DONNEES
                 String nom = rs.getString("nom");
                 String description = rs.getString("description");
                 int authorId = rs.getInt("authorId");
-                int sondagePriveResult = rs.getInt("sondagePrive");
-                boolean sondagePrive = false;
-                if(sondagePriveResult!=0) {
-                    sondagePrive=true;
-                }
+                int sondagePrive = rs.getInt("sondagePrive");
 
                 //CREATION LOCAL DU SONDAGE
-                Sondage sondage = new Sondage(nom, description, authorId, sondagePrive)
+                Sondage sondageSuccess = new Sondage(id, nom, description, authorId, sondagePrive);
+                return sondageSuccess;
             }
         }
         //EN CAS D'ERREUR
         catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
         //ON RETOURNE LE NOMBRE DE SONDAGES DANS LA BDD
-        return sondage;
-    }*/
+    }
+
+    public int createSondage(String nom, String description, int authorId, int sondagePrive) throws SQLException {
+        int id = this.getNumberOfSurvey();
+        //String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('1', 'SondageTest', 'CeciEstUnTest', '2', '0');";
+
+        String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('"+id+"', '"+nom+"', '"+description+"', '"+authorId+"', '"+sondagePrive+"');";
+
+        //CONNEXION
+        try (Statement stmt = this.con.createStatement()) {
+            stmt.executeUpdate(query);
+        }
+        //EN CAS D'ERREUR
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public void deleteSondage(int id) throws SQLException {
+        //String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('1', 'SondageTest', 'CeciEstUnTest', '2', '0');";
+
+        String query = "DELETE FROM SONDAGES WHERE '"+id+"';";
+
+        //CONNEXION
+        try (Statement stmt = this.con.createStatement()) {
+            stmt.executeUpdate(query);
+        }
+        //EN CAS D'ERREUR
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

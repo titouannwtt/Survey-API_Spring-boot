@@ -13,8 +13,6 @@ public class Greeting {
 	}
 
 	public long getId() throws SQLException {
-		Database db = new Database();
-		db.test();
 		return id;
 	}
 
