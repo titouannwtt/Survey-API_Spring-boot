@@ -49,6 +49,36 @@ public class SondageController {
         }
     }
 
+    /*@GetMapping("/sondage/listOfMySurveys")
+    public Survey[] create(@RequestParam(value="token", defaultValue = "") String token) {
+        LoggedTokenInfo tokenInfo = LogIn.login(token);
+        //Survey[] surveys = new Survey()[];
+        /*if (tokenInfo == null) {
+            Request request = new Request(1, "Token invalide");
+            return request;
+        } else {*/
+            //int authorId = tokenInfo.getID();
+           /* if (authorId==0) {
+                Request request = new Request(1, "Auteur introuvable");
+                return request;
+            }
+            else {*/
+                //if((Survey.listOfMySurveys(authorId)==0)) {
+
+
+
+
+
+
+
+               /* }
+                else {
+                    Request request = new Request(0, "Sondage supprimé avec succès.");
+                    return request;
+                }*/
+           /* }
+        }*/
+    //}
 
     @GetMapping("/sondage/delete")
     public Request delete(@RequestParam(value="id", defaultValue = "") int id,
