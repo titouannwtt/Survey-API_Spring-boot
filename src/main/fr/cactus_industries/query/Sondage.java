@@ -1,9 +1,5 @@
 package fr.cactus_industries.query;
 
-import fr.cactus_industries.restservice.Database;
-
-import java.sql.SQLException;
-
 public class Sondage {
 
     private int id;

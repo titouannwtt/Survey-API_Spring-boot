@@ -66,23 +66,30 @@ public class Survey {
     
     
     public static int createSurvey(String nom, String description, int authorId, int sondagePrive){
-        int id = getNumberOfSurvey();
+        //int id = getNumberOfSurvey();
         //String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('1', 'SondageTest', 'CeciEstUnTest', '2', '0');";
-        
-        String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('"+id+"', '"+nom+"', '"+description+"', '"+authorId+"', '"+sondagePrive+"');";
+        String query = "INSERT INTO SONDAGES (nom, description, authorId, sondagePrive) VALUES ('"+nom+"', '"+description+"', '"+authorId+"', '"+sondagePrive+"');";
         
         Connection con = Database.getDBConnection();
         
-        if(con != null)
-        //CONNEXION
-        try (Statement stmt = con.createStatement()) {
-            stmt.executeUpdate(query);
+        if(con != null) {
+            //CONNEXION
+            try (Statement stmt = con.createStatement()) {
+                if((stmt.executeUpdate(query))==0) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+            //EN CAS D'ERREUR
+            catch (SQLException e) {
+                e.printStackTrace();
+                return -1;
+            }
         }
-        //EN CAS D'ERREUR
-        catch (SQLException e) {
-            e.printStackTrace();
+        else {
+            return -1;
         }
-        return id;
     }
     
     

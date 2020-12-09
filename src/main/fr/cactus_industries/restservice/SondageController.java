@@ -32,9 +32,14 @@ public class SondageController {
             }
             else {
                 if(sondagePrive==0 || sondagePrive==1) {
-                    Survey.createSurvey(nom, description, authorId, sondagePrive);
-                    Request request = new Request(0, "Sondage "+nom+" créé avec succès.");
-                    return request;
+                    if((Survey.createSurvey(nom, description, authorId, sondagePrive))==0) {
+                        Request request = new Request(1, "Erreur lors de l'appel à la base de donnees");
+                        return request;
+                    }
+                    else {
+                        Request request = new Request(0, "Sondage " + nom + " créé avec succès.");
+                        return request;
+                    }
                 }
                 else {
                     Request request = new Request(1, "prive doit etre compris entre 0 et 1 pour definir si le sondage est prive ou non");
