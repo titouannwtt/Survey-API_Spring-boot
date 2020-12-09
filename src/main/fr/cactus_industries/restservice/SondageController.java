@@ -32,11 +32,17 @@ public class SondageController {
             }
             else {
                 if(sondagePrive==0 || sondagePrive==1) {
-                    if((Survey.createSurvey(nom, description, authorId, sondagePrive))==0) {
+                    int idOfSondage = Survey.createSurvey(nom, description, authorId, sondagePrive);
+                    if(idOfSondage<0) {
                         Request request = new Request(1, "Erreur lors de l'appel à la base de donnees");
                         return request;
                     }
                     else {
+
+                        //On créé un sondage (pour le moment on ne s'en sert pas)
+                        Sondage sondage = new Sondage(idOfSondage, nom, description, authorId, sondagePrive);
+                        System.out.println(""+sondage);
+
                         Request request = new Request(0, "Sondage " + nom + " créé avec succès.");
                         return request;
                     }
