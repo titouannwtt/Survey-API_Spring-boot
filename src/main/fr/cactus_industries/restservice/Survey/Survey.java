@@ -93,21 +93,30 @@ public class Survey {
     }
     
     
-    public static void deleteSondage(int id) throws SQLException {
+    public static int deleteSurvey(int id, int authorId) {
         //String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('1', 'SondageTest', 'CeciEstUnTest', '2', '0');";
         
-        String query = "DELETE FROM SONDAGES WHERE id='"+id+"';";
+        String query = "DELETE FROM SONDAGES WHERE id='"+id+"' AND authorId='"+authorId+"';";
         
         Connection con = Database.getDBConnection();
-        
-        if(con != null)
-        //CONNEXION
-        try (Statement stmt = con.createStatement()) {
-            stmt.executeUpdate(query);
+
+        if(con != null) {
+            //CONNEXION
+            try (Statement stmt = con.createStatement()) {
+                if((stmt.executeUpdate(query))==0) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+            //EN CAS D'ERREUR
+            catch (SQLException e) {
+                e.printStackTrace();
+                return -1;
+            }
         }
-        //EN CAS D'ERREUR
-        catch (SQLException e) {
-            e.printStackTrace();
+        else {
+            return -1;
         }
     }
 

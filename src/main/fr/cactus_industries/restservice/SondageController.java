@@ -49,13 +49,31 @@ public class SondageController {
         }
     }
 
-    /*
+
     @GetMapping("/sondage/delete")
-    public void delete(@RequestParam(value="id", defaultValue = "") int id) {
-        try {
-            db.deleteSondage(id);
-        } catch(Exception e) {
-            e.printStackTrace();
+    public Request delete(@RequestParam(value="id", defaultValue = "") int id,
+                          @RequestParam(value="token", defaultValue = "") String token) {
+        LoggedTokenInfo tokenInfo = LogIn.login(token);
+        if (tokenInfo == null) {
+            Request request = new Request(1, "Token invalide");
+            return request;
+        } else {
+            int authorId = tokenInfo.getID();
+            if (authorId==0) {
+                Request request = new Request(1, "Auteur introuvable");
+                return request;
+            }
+            else {
+                if((Survey.deleteSurvey(id, authorId)==0)) {
+                    Request request = new Request(1, "Erreur lors de l'appel à la base de donnees");
+                    return request;
+                }
+                else {
+                    Request request = new Request(0, "Sondage supprimé avec succès.");
+                    return request;
+                }
+            }
         }
-    }*/
+    }
+
 }
