@@ -20,4 +20,10 @@ public class LogInController {
         return LogResponse.tryRenew(token);
     }
     
+    @GetMapping("/TestToken")
+    public LogResponse TestToken(@RequestParam(value = "token", defaultValue = "") String token){
+    
+        return LogResponse.testToken(token);
+    }
+    
 }

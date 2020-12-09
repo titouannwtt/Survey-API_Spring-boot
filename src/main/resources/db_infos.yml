@@ -1,0 +1,5 @@
+db:
+  type: "mysql"
+  url: "cerenity.net/basededonnees"
+  user: "progweb"
+  pass: "Esiea2020"

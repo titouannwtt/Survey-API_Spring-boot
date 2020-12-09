@@ -1,26 +1,90 @@
 package fr.cactus_industries.restservice;
 
-import fr.cactus_industries.query.Sondage;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.*;
 import java.sql.*;
+import java.util.Map;
 
 public class Database {
 
-    private Connection con;
-
-    public Database() {
-        //On donne les variables pour la connexion à la base de données
+    private static Connection con = null;
+    
+    // Renvoie la connection actuelle si elle est valide/existance, sinon établie une nouvelle connexion
+    public static Connection getDBConnection(){
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.con = DriverManager.getConnection(
-                    "jdbc:mysql://cerenity.net/basededonnees" /*ou "jdbc:mysql://cactus-industries.fr/Users" */,
-                    "progweb",
-                    "Esiea2020");
+            if(con != null && con.isValid(3)){ // Check if there is already a connection and if it is still valid
+                return con;
+            } else{ // Make or remake the connection
+                EstablishConnection();
+                return con;
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
-        //En cas d'erreur
-        catch (SQLException | ClassNotFoundException e) {
+        // Erreur: On tente la création d'une nouvelle connection
+        if(EstablishConnection()){
+            return con;
+        }
+        return null;
+    }
+    
+    // Etablie une connexion à la BDD en fonction des paramètres rentrés dans le fichier de configuration
+    private static boolean EstablishConnection(){
+        File f = new File("./db_infos.yml");
+        if(!f.exists()){
+            try{
+                InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("db_infos.yml");
+                OutputStream out = new BufferedOutputStream(new FileOutputStream(f));
+                byte[] buff = new byte[1024];
+                int length;
+                while((length = in.read(buff))>0){
+                    out.write(buff, 0, length);
+                }
+                out.close();
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        Map<String, Object> db_info = null;
+        try{ // On récupère la map des données du Yaml
+            db_info = new Yaml().load(new FileInputStream(f));
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return false;
         }
+        
+        // On créé la connexion à la BDD avec les infos contenue dans le Yaml
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:"+ getConfigString(db_info, "db.type")+"://"+getConfigString(db_info,"db.url") /*ou "jdbc:postgre://cactus-industries.fr/ProgWeb" */,
+                    getConfigString(db_info, "db.user"),
+                    getConfigString(db_info, "db.pass"));
+        }
+        catch (SQLException e) { //En cas d'erreur
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    
+    
+    public static String getConfigString(Map<String, Object> config, String path){
+        String[] list = path.split("\\.");
+        Object o = null;
+        Map<String, Object> map = config;
+        for (String  s:list){
+            o = map.get(s);
+            if(o == null)
+                return "";
+            else
+            if(o instanceof Map)
+                map = (Map<String, Object>) o;
+        }
+        
+        return (String) o;
     }
 
     /*
@@ -47,83 +111,4 @@ public class Database {
             e.printStackTrace();
         }
     }*/
-
-    public int getNumberOfSurvey() throws SQLException {
-        int result = -1;
-        //REQUETE
-        String query = "SELECT COUNT(*) FROM SONDAGES";
-
-        //CONNEXION
-        try (Statement stmt = this.con.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
-            //RECUPERATION DES DONNEES (ici : première ligne, contenant le nombre de sondages créés)
-            if (rs.next()) {
-                result= rs.getInt(1);
-            }
-        }
-        //EN CAS D'ERREUR
-        catch (SQLException e) {
-            result=-2;
-            e.printStackTrace();
-        }
-        //ON RETOURNE LE NOMBRE DE SONDAGES DANS LA BDD
-        return result;
-    }
-
-    public Sondage getSondageById(int id) throws SQLException {
-        String query = "select nom, description, authorId, sondagePrive from Users where id="+id+";";
-        //CONNEXION
-        try (Statement stmt = this.con.createStatement()) {
-            ResultSet rs = stmt.executeQuery(query);
-            if(rs.next()) {
-                //RECUPERATION DES DONNEES
-                String nom = rs.getString("nom");
-                String description = rs.getString("description");
-                int authorId = rs.getInt("authorId");
-                int sondagePrive = rs.getInt("sondagePrive");
-
-                //CREATION LOCAL DU SONDAGE
-                Sondage sondageSuccess = new Sondage(id, nom, description, authorId, sondagePrive);
-                return sondageSuccess;
-            }
-        }
-        //EN CAS D'ERREUR
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-        //ON RETOURNE LE NOMBRE DE SONDAGES DANS LA BDD
-    }
-
-    public int createSondage(String nom, String description, int authorId, int sondagePrive) throws SQLException {
-        int id = this.getNumberOfSurvey();
-        //String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('1', 'SondageTest', 'CeciEstUnTest', '2', '0');";
-
-        String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('"+id+"', '"+nom+"', '"+description+"', '"+authorId+"', '"+sondagePrive+"');";
-
-        //CONNEXION
-        try (Statement stmt = this.con.createStatement()) {
-            stmt.executeUpdate(query);
-        }
-        //EN CAS D'ERREUR
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return id;
-    }
-
-    public void deleteSondage(int id) throws SQLException {
-        //String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('1', 'SondageTest', 'CeciEstUnTest', '2', '0');";
-
-        String query = "DELETE FROM SONDAGES WHERE '"+id+"';";
-
-        //CONNEXION
-        try (Statement stmt = this.con.createStatement()) {
-            stmt.executeUpdate(query);
-        }
-        //EN CAS D'ERREUR
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

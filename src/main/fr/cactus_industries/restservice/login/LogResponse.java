@@ -6,21 +6,29 @@ public abstract class LogResponse {
     
     
     public static LogResponse tryLogin(String user, String pass){
-        // Try connection (Mock for now)
-        if(user.equals("MockUser") && pass.equals("MockMotDePasse")){
-            return new LogIn(LoggedTokenInfo.getToken(user));
+        // Try connection
+        LoggedTokenInfo tokenInfo = LogIn.login(user, pass);
+        if(tokenInfo != null){ // If tokenInfo is null it means the account doesn't exist with this pass
+            return new LogInResponse(tokenInfo);
         }
         
-        return new LogFail();
-        
+        return new LogFailResponse();
     }
     
     public static LogResponse tryRenew(String token) {
-        LoggedTokenInfo tokenInfo = MockToken.getFromToken(token);
+        LoggedTokenInfo tokenInfo = TokenHandler.getIDFromToken(token);
         if(tokenInfo != null){
-            return new LogIn(LoggedTokenInfo.renewToken(tokenInfo));
+            return new LogInResponse(LoggedTokenInfo.renewToken(tokenInfo));
         }
-        return new LogFail("Invalid token or expired.");
+        return new LogFailResponse("Invalid token or expired.");
+    }
+    
+    public static LogResponse testToken(String token){
+        LoggedTokenInfo tokenInfo = LogIn.login(token);
+        if(tokenInfo != null){
+            return new LogInResponse(tokenInfo);
+        }
+        return new LogFailResponse("Wrong token or expired.");
     }
     
     public abstract String getStatus();

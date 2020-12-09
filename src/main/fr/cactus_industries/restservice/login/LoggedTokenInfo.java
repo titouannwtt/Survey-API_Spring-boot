@@ -9,37 +9,47 @@ public class LoggedTokenInfo {
     private static final long EXPIRATION_TIME = 300_000; // En ms
     private static final long EXPIRATION_HYSTERESIS = 30_000; // En ms
     
-    private final String ID;
+    private final int ID;
     private final String token;
     private final long expiration;
     
-    private LoggedTokenInfo(String ID){
+    public LoggedTokenInfo(int ID, String token, long expiration){
+        this.ID = ID;
+        this.token = token;
+        this.expiration = expiration;
+    }
+    
+    // Génération d'un nouveau token et ajout dans la DB
+    private LoggedTokenInfo(int ID){
         long time = new Date().getTime();
         this.ID = ID;
-        token = DigestUtils.md5DigestAsHex((time + ID).getBytes());
+        token = DigestUtils.md5DigestAsHex((""+time + ID).getBytes());
         expiration = time + EXPIRATION_TIME;
-        MockToken.putToken(this);
+        TokenHandler.putTokenInDB(this);
     }
     
     // Outils pour générer les tokens pour un compte dont l'authentification a été validé précédemment.
     // Génère un nouveau token si inexistant, renvoit le token actif en cours ou renouvelle le token.
-    public static LoggedTokenInfo getToken(String ID){
-        LoggedTokenInfo tokenInfo = MockToken.getFromID(ID);
+    public static LoggedTokenInfo getToken(int ID){
+        LoggedTokenInfo tokenInfo = TokenHandler.getTokenFromID(ID);
         if(tokenInfo != null){
             if(tokenInfo.expiration < new Date().getTime() + EXPIRATION_HYSTERESIS){
+                if(TokenHandler.deleteToken(tokenInfo)){
+                    System.out.println("Old Token has not been deleted ("+tokenInfo.getToken()+")");
+                }
                 tokenInfo = new LoggedTokenInfo(ID);
-                MockToken.replaceToken(tokenInfo);
             }
         } else {
             tokenInfo = new LoggedTokenInfo(ID);
-            MockToken.putToken(tokenInfo);
         }
         return tokenInfo;
     }
     
     public static LoggedTokenInfo renewToken(LoggedTokenInfo tokenInfo){
+        if(TokenHandler.deleteToken(tokenInfo)){
+            System.out.println("Old Token has not been deleted ("+tokenInfo.getToken()+")");
+        }
         LoggedTokenInfo newTokenInfo = new LoggedTokenInfo(tokenInfo.ID);
-        MockToken.replaceToken(newTokenInfo);
         return newTokenInfo;
     }
     
@@ -47,7 +57,7 @@ public class LoggedTokenInfo {
         return new Date().getTime() < expiration;
     }
     
-    public String getID() {
+    public int getID() {
         return ID;
     }
     

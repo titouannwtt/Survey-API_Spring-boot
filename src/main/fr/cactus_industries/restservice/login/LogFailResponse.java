@@ -1,15 +1,15 @@
 package fr.cactus_industries.restservice.login;
 
-public class LogFail extends LogResponse {
+public class LogFailResponse extends LogResponse {
     
     private String reason;
     
-    public LogFail(){
+    public LogFailResponse(){
         status = "FAILURE";
         reason = "Bad login";
     }
     
-    public LogFail(String reason){
+    public LogFailResponse(String reason){
         status = "FAILURE";
         this.reason = reason;
     }
