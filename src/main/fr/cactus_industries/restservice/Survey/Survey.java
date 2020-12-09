@@ -89,7 +89,7 @@ public class Survey {
     public static void deleteSondage(int id) throws SQLException {
         //String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('1', 'SondageTest', 'CeciEstUnTest', '2', '0');";
         
-        String query = "DELETE FROM SONDAGES WHERE '"+id+"';";
+        String query = "DELETE FROM SONDAGES WHERE id='"+id+"';";
         
         Connection con = Database.getDBConnection();
         
