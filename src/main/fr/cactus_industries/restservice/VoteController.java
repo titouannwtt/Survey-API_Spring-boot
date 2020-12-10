@@ -46,32 +46,4 @@ public class VoteController {
         }
     }
 
-    @GetMapping("/vote/listOfPropositionsForSondage")
-    public List<Proposition> listOfPropositionsForSondage(@RequestParam(value="associatedSurvey", defaultValue = "") int associatedSurvey) {
-        List<Proposition> list = PropositionRDV.getListOfPropositionsBySondageId(associatedSurvey);
-        return list;
-    }
-
-    @GetMapping("/vote/remove")
-    public Response remove(@RequestParam(value="id", defaultValue = "") int id,
-                           @RequestParam(value="token", defaultValue = "") String token) {
-        LoggedTokenInfo tokenInfo = LogIn.login(token);
-        if (tokenInfo == null) {
-            return new FailResponse(FailResponse.Reason.INVALIDTOKEN);
-        } else {
-            int authorId = tokenInfo.getID();
-            if (authorId==0) {
-                return new FailResponse(FailResponse.Reason.NOAUTHOR);
-            }
-            else {
-                if((PropositionRDV.removeProposition(id)==0)) {
-                    return new FailResponse(FailResponse.Reason.GENERIC);
-                }
-                else {
-                    return new Response("OK");
-                }
-            }
-        }
-    }
-
 }
