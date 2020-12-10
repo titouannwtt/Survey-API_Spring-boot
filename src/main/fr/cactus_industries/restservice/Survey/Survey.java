@@ -36,7 +36,7 @@ public class Survey {
     
     
     public static Sondage getSurveyById(int id) {
-        String query = "select nom, description, authorId, sondagePrive from Users where id="+id+";";
+        String query = "select nom, description, authorId, sondagePrive from SONDAGES where id="+id+";";
         
         Connection con = Database.getDBConnection();
         
@@ -61,7 +61,6 @@ public class Survey {
             e.printStackTrace();
         }
         return null;
-        //ON RETOURNE LE NOMBRE DE SONDAGES DANS LA BDD
     }
     
     

@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PropositionRDV {
 
@@ -37,21 +39,45 @@ public class PropositionRDV {
         }
         return null;
     }
+
+    public static List<Proposition> getListOfPropositionsBySondageId(int associatedSurvey) {
+        String query = "select id, associatedSurvey, lieu, date from RDV where associatedSurvey='"+associatedSurvey+"';";
+
+        Connection con = Database.getDBConnection();
+        List<Proposition> listOfPropositions = new ArrayList<>();
+        if(con != null)
+            //CONNEXION
+            try (Statement stmt = con.createStatement()) {
+                ResultSet rs = stmt.executeQuery(query);
+                while (rs.next()) {
+                    Proposition proposition = new Proposition(rs.getInt("id"), rs.getInt("associatedSurvey"), rs.getString("lieu"), rs.getString("date"));
+                    //System.out.println("Proposition ID : "+proposition.getId());
+                    //System.out.println("Sondage ID of Proposition : "+proposition.getAssociatedId());
+                    listOfPropositions.add(proposition);
+                }
+                rs.close();
+                return listOfPropositions;
+            }
+            //EN CAS D'ERREUR
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return null;
+    }
     
-    
-    public static int createProposition(int associatedSurvey, String date, String lieu){
-        String query = "INSERT INTO RDV (associatedSurvey, date, lieu) VALUES ('"+associatedSurvey+"', '"+date+"', '"+lieu+"'), Statement.RETURN_GENERATED_KEYS;";
+    public static int addProposition(int associatedSurvey, String date, String lieu){
+        String query = "INSERT INTO RDV (associatedSurvey, date, lieu) VALUES ('"+associatedSurvey+"', '"+date+"', '"+lieu+"');";
         
         Connection con = Database.getDBConnection();
-        
+
         if(con != null) {
             //CONNEXION
             try (Statement stmt = con.createStatement()) {
-                stmt.executeUpdate(query);
-                ResultSet rs = stmt.getGeneratedKeys();
-                rs.next();
-                long id = rs.getLong(1);
-                return (int) id;
+                if((stmt.executeUpdate(query))==0) {
+                    return 0;
+                } else {
+                    return -1;
+                }
             }
             //EN CAS D'ERREUR
             catch (SQLException e) {
@@ -65,10 +91,8 @@ public class PropositionRDV {
     }
     
     
-    public static int deleteSurvey(int id, int authorId) {
-        //String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('1', 'SondageTest', 'CeciEstUnTest', '2', '0');";
-        
-        String query = "DELETE FROM SONDAGES WHERE id='"+id+"' AND authorId='"+authorId+"';";
+    public static int removeProposition(int id) {
+        String query = "DELETE FROM RDV WHERE id='"+id+"';";
         
         Connection con = Database.getDBConnection();
 

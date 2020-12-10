@@ -71,12 +71,6 @@ public class SondageController {
             else {*/
                 //if((Survey.listOfMySurveys(authorId)==0)) {
 
-
-
-
-
-
-
                /* }
                 else {
                     Request request = new Request(0, "Sondage supprimé avec succès.");
