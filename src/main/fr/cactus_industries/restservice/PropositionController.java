@@ -1,8 +1,6 @@
 package fr.cactus_industries.restservice;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import fr.cactus_industries.query.Sondage;
 import fr.cactus_industries.query.Proposition;
@@ -18,39 +16,33 @@ import org.springframework.web.bind.annotation.RestController;
 public class PropositionController {
 
     @GetMapping("/proposition/add")
-    public Request add(@RequestParam(value="associatedSurvey", defaultValue = "") int associatedSurvey,
+    public Response add(@RequestParam(value="associatedSurvey", defaultValue = "") int associatedSurvey,
                           @RequestParam(value="lieu", defaultValue = "") String lieu,
                           @RequestParam(value="date", defaultValue = "") String date,
                           @RequestParam(value="token", defaultValue = "") String token) {
         LoggedTokenInfo tokenInfo = LogIn.login(token);
         Sondage sondage = Survey.getSurveyById(associatedSurvey);
         if(sondage==null) {
-            Request request = new Request(1, "Aucun sondage ne possede l'ID "+associatedSurvey+".");
-            return request;
+            return new FailResponse(FailResponse.Reason.INVALIDIDOFSONDAGE);
         }
         if (tokenInfo == null) {
-            Request request = new Request(1, "Token invalide");
-            return request;
+            return new FailResponse(FailResponse.Reason.INVALIDTOKEN);
         } else {
             int authorId = tokenInfo.getID();
             if (authorId==0) {
-                Request request = new Request(1, "Auteur introuvable");
-                return request;
+                return new FailResponse(FailResponse.Reason.NOAUTHOR);
             }
             else if(sondage.getAuthorId()!=authorId){
-                Request request = new Request(1, "Vous n'etes pas l'auteur du sondage "+sondage.getNom()+". Vous n'etes pas autorise a ajouter des propositions");
-                return request;
+                return new FailResponse(FailResponse.Reason.YOUARENOTTHEAUTHOR);
             }
             else {
                 int result = PropositionRDV.addProposition(sondage.getId(), date, lieu);
-                Request request;
                 if(result<0) {
-                    request = new Request(1, "Erreur lors de l'appel à la base de donnees");
+                    return new FailResponse(FailResponse.Reason.GENERIC);
                 }
                 else {
-                    request = new Request(0, "Proposition : " + lieu + " a " + date + " creee avec succes.");
+                    return new Response("OK");
                 }
-                return request;
             }
         }
     }
@@ -62,26 +54,22 @@ public class PropositionController {
     }
 
     @GetMapping("/proposition/remove")
-    public Request remove(@RequestParam(value="id", defaultValue = "") int id,
+    public Response remove(@RequestParam(value="id", defaultValue = "") int id,
                           @RequestParam(value="token", defaultValue = "") String token) {
         LoggedTokenInfo tokenInfo = LogIn.login(token);
         if (tokenInfo == null) {
-            Request request = new Request(1, "Token invalide");
-            return request;
+            return new FailResponse(FailResponse.Reason.INVALIDTOKEN);
         } else {
             int authorId = tokenInfo.getID();
             if (authorId==0) {
-                Request request = new Request(1, "Auteur introuvable");
-                return request;
+                return new FailResponse(FailResponse.Reason.NOAUTHOR);
             }
             else {
-                if((Survey.deleteSurvey(id, authorId)==0)) {
-                    Request request = new Request(1, "Erreur lors de l'appel à la base de donnees");
-                    return request;
+                if((PropositionRDV.removeProposition(id)==0)) {
+                    return new FailResponse(FailResponse.Reason.GENERIC);
                 }
                 else {
-                    Request request = new Request(0, "Sondage supprimé avec succès.");
-                    return request;
+                    return new Response("OK");
                 }
             }
         }

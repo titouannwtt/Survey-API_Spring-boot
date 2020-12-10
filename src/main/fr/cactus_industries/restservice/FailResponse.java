@@ -6,6 +6,8 @@ public class FailResponse extends Response {
         GENERIC("ERROR", "An error occurred (no more info)"),
         BADLOGIN("BAD LOGIN", "Wrong User or Password"),
         INVALIDTOKEN("TOKEN INVALID", "Token has expired or doesn't exist"),
+        INVALIDIDOFSONDAGE("INVALID SONDAGE ID", "ID of sondage not found"),
+        YOUARENOTTHEAUTHOR("PERMISSION DENIED", "You are not the author of this sondage, you can't modified it"),
         NOAUTHOR("NO AUTHOR", "Author not found");
 
         private String status;
