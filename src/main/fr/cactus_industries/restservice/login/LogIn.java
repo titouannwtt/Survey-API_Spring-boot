@@ -13,7 +13,7 @@ public class LogIn {
     public static LoggedTokenInfo login(String User, String pass){
         
         String query = "SELECT id FROM USERS where login='"+User+"' AND pass='"+pass+"';";
-    
+        
         Connection con = Database.getDBConnection();
         
         if(con != null)
@@ -26,7 +26,7 @@ public class LogIn {
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
-    
+        
         return null;
     }
     

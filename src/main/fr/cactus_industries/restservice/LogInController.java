@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogInController {
     
     @GetMapping("/LogIn")
-    public LogResponse LogIn(@RequestParam(value="user", defaultValue = "") String user,
+    public Response LogIn(@RequestParam(value="user", defaultValue = "") String user,
                              @RequestParam(value = "pass", defaultValue = "") String pass){
         return LogResponse.tryLogin(user, pass);
     }
     
     @GetMapping("/Renew")
-    public LogResponse Renew(@RequestParam(value = "token", defaultValue = "") String token){
+    public Response Renew(@RequestParam(value = "token", defaultValue = "") String token){
         
         return LogResponse.tryRenew(token);
     }
     
     @GetMapping("/TestToken")
-    public LogResponse TestToken(@RequestParam(value = "token", defaultValue = "") String token){
+    public Response TestToken(@RequestParam(value = "token", defaultValue = "") String token){
     
         return LogResponse.testToken(token);
     }

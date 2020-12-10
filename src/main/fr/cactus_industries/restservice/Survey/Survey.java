@@ -1,5 +1,6 @@
 package fr.cactus_industries.restservice.Survey;
 
+import fr.cactus_industries.query.ListSondage;
 import fr.cactus_industries.query.Sondage;
 import fr.cactus_industries.restservice.Database;
 
@@ -64,60 +65,72 @@ public class Survey {
         //ON RETOURNE LE NOMBRE DE SONDAGES DANS LA BDD
     }
     
+    public static ListSondage getSurveysFromUser(int userID) {
+        String query = "SELECT id, nom, description, sondagePrive from Users where authorId="+userID+";";
+        
+        Connection con = Database.getDBConnection();
+        ListSondage LSond = new ListSondage();
+        
+        if(con != null)
+        //CONNEXION
+        try (Statement stmt = con.createStatement()) {
+            ResultSet rs = stmt.executeQuery(query);
+            
+            while(rs.next()){
+                LSond.add(new Sondage(rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getString("description"),
+                        userID,
+                        rs.getInt("sondagePrive")));
+            }
+            return LSond;
+        }
+        //EN CAS D'ERREUR
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+        //ON RETOURNE LE NOMBRE DE SONDAGES DANS LA BDD
+    }
     
     public static int createSurvey(String nom, String description, int authorId, int sondagePrive){
-        //int id = getNumberOfSurvey();
+        int id = getNumberOfSurvey();
         //String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('1', 'SondageTest', 'CeciEstUnTest', '2', '0');";
-        String query = "INSERT INTO SONDAGES (nom, description, authorId, sondagePrive) VALUES ('"+nom+"', '"+description+"', '"+authorId+"', '"+sondagePrive+"');";
+        
+        String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('"+id+"', '"+nom+"', '"+description+"', '"+authorId+"', '"+sondagePrive+"');";
         
         Connection con = Database.getDBConnection();
         
-        if(con != null) {
-            //CONNEXION
-            try (Statement stmt = con.createStatement()) {
-                if((stmt.executeUpdate(query))==0) {
-                    return 0;
-                } else {
-                    return -1;
-                }
-            }
-            //EN CAS D'ERREUR
-            catch (SQLException e) {
-                e.printStackTrace();
-                return -1;
-            }
+        if(con != null)
+        //CONNEXION
+        try (Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(query);
         }
-        else {
-            return -1;
+        //EN CAS D'ERREUR
+        catch (SQLException e) {
+            e.printStackTrace();
         }
+        return id;
     }
     
     
     public static int deleteSurvey(int id, int authorId) {
         //String query = "INSERT INTO SONDAGES (id, nom, description, authorId, sondagePrive) VALUES ('1', 'SondageTest', 'CeciEstUnTest', '2', '0');";
         
-        String query = "DELETE FROM SONDAGES WHERE id='"+id+"' AND authorId='"+authorId+"';";
+        String query = "DELETE FROM SONDAGES WHERE '"+id+"';";
         
         Connection con = Database.getDBConnection();
-
-        if(con != null) {
-            //CONNEXION
-            try (Statement stmt = con.createStatement()) {
-                if((stmt.executeUpdate(query))==0) {
-                    return 0;
-                } else {
-                    return -1;
-                }
-            }
-            //EN CAS D'ERREUR
-            catch (SQLException e) {
-                e.printStackTrace();
-                return -1;
-            }
+        
+        if(con != null)
+        //CONNEXION
+        try (Statement stmt = con.createStatement()) {
+            stmt.executeUpdate(query);
         }
-        else {
-            return -1;
+        //EN CAS D'ERREUR
+        catch (SQLException e) {
+            e.printStackTrace();
         }
+        return 0;
     }
 
 }

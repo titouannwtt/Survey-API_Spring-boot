@@ -48,7 +48,7 @@ public class Database {
                 return false;
             }
         }
-        Map<String, Object> db_info = null;
+        Map<String, Object> db_info;
         try{ // On récupère la map des données du Yaml
             db_info = new Yaml().load(new FileInputStream(f));
         } catch (FileNotFoundException e) {

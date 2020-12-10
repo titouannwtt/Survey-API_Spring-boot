@@ -1,14 +1,16 @@
 package fr.cactus_industries.restservice.login;
 
-public class LogInResponse extends LogResponse {
+import fr.cactus_industries.restservice.Response;
+
+public class LogInResponse extends Response {
     
     private String token;
     private long expiration;
     
     public LogInResponse(LoggedTokenInfo tokenInfo){
+        super("OK");
         this.token = tokenInfo.getToken();
         this.expiration = tokenInfo.getExpiration();
-        this.status = "OK";
     }
     
     @Override
