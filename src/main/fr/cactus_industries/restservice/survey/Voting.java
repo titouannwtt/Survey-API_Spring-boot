@@ -73,7 +73,7 @@ public class Voting {
         if(con != null) {
             //CONNEXION
             try (Statement stmt = con.createStatement()) {
-                if((stmt.executeUpdate(query))==0) {
+                if((stmt.executeUpdate(query))!=0) {
                     return 0;
                 } else {
                     return -1;

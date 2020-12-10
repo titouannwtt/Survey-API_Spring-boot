@@ -21,19 +21,17 @@ public class VoteController {
                         @RequestParam(value="token", defaultValue = "") String token) {
         LoggedTokenInfo tokenInfo = LogIn.login(token);
         Proposition proposition = PropositionRDV.getPropositionById(associatedProposition);
-        System.out.println("test1");
         if(proposition==null) {
             return new FailResponse(FailResponse.Reason.INVALIDIDOFPROPOSITION);
         }
         if (tokenInfo == null) {
             return new FailResponse(FailResponse.Reason.INVALIDTOKEN);
         } else {
-            System.out.println("test2");
             int associatedUser = tokenInfo.getID();
             if (associatedUser==0) {
                 return new FailResponse(FailResponse.Reason.NOAUTHOR);
             }
-            else if(Survey.checkAlreadyVote(associatedProposition, associatedUser)){
+            else if(!Survey.checkAlreadyVote(associatedProposition, associatedUser)){
                 int result = Voting.addVote(associatedProposition, associatedUser);
                 if(result==-1) {
                     return new FailResponse(FailResponse.Reason.GENERIC);
