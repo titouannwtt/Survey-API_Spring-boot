@@ -3,7 +3,6 @@ package fr.cactus_industries.restservice;
 import fr.cactus_industries.query.ListSondage;
 import fr.cactus_industries.query.Sondage;
 import fr.cactus_industries.restservice.Survey.Survey;
-import fr.cactus_industries.restservice.Survey.SurveyMultResponse;
 import fr.cactus_industries.restservice.login.LogIn;
 import fr.cactus_industries.restservice.login.LoggedTokenInfo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +52,7 @@ public class SondageController {
         LoggedTokenInfo tokenInfo = LogIn.login(token);
         ListSondage listSondage = Survey.getSurveysFromUser(tokenInfo.getID());
         if(listSondage != null)
-            return new SurveyMultResponse(listSondage);
+            return new MultipleResponse<>(listSondage.getSondages());
         return new FailResponse(FailResponse.Reason.INVALIDTOKEN);
     }
 
