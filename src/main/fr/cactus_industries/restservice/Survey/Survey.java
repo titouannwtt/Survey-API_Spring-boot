@@ -1,13 +1,17 @@
-package fr.cactus_industries.restservice.Survey;
+package fr.cactus_industries.restservice.survey;
 
 import fr.cactus_industries.query.ListSondage;
+import fr.cactus_industries.query.Proposition;
 import fr.cactus_industries.query.Sondage;
+import fr.cactus_industries.query.Vote;
 import fr.cactus_industries.restservice.Database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Survey {
     
@@ -65,7 +69,7 @@ public class Survey {
     }
     
     public static ListSondage getSurveysFromUser(int userID) {
-        String query = "SELECT id, nom, description, sondagePrive from Users where authorId="+userID+";";
+        String query = "SELECT id, nom, description, sondagePrive from SONDAGES where authorId="+userID+";";
         
         Connection con = Database.getDBConnection();
         ListSondage LSond = new ListSondage();
@@ -130,6 +134,30 @@ public class Survey {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static boolean checkAlreadyVote(int idProposition, int idUser) {
+        String query = "select id, associatedProposition, associatedUser from VOTES where associatedProposition='"+idProposition+"' AND associatedUser='"+idUser+"'";
+
+        Connection con = Database.getDBConnection();
+        List<Proposition> listOfPropositions = new ArrayList<>();
+        if(con != null) {
+            //CONNEXION
+            try (Statement stmt = con.createStatement()) {
+                ResultSet rs = stmt.executeQuery(query);
+                while (rs.next()) {
+                    if( (rs.getInt("associatedProposition")==idProposition) && (rs.getInt("associatedUser")==idUser) ) {
+                        return true;
+                    }
+                }
+                rs.close();
+            }
+            //EN CAS D'ERREUR
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
 }

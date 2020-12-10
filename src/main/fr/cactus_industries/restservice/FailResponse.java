@@ -7,8 +7,11 @@ public class FailResponse extends Response {
         BADLOGIN("BAD LOGIN", "Wrong User or Password"),
         INVALIDTOKEN("TOKEN INVALID", "Token has expired or doesn't exist"),
         INVALIDIDOFSONDAGE("INVALID SONDAGE ID", "ID of sondage not found"),
+        INVALIDIDOFPROPOSITION("INVALID PROPOSITION ID", "ID of proposition not found"),
+        INVALIDIDOFVOTE("INVALID VOTE ID", "ID of vote not found"),
         YOUARENOTTHEAUTHOR("PERMISSION DENIED", "You are not the author of this sondage, you can't modified it"),
-        NOAUTHOR("NO AUTHOR", "Author not found");
+        NOAUTHOR("NO AUTHOR", "Author not found"),
+        YOUHAVEALREADYVOTED("ALREADY VOTED", "You can't vote because you have already voted for this sondage");
 
         private String status;
         private String message;

@@ -4,8 +4,8 @@ import java.util.List;
 
 import fr.cactus_industries.query.Sondage;
 import fr.cactus_industries.query.Proposition;
-import fr.cactus_industries.restservice.Survey.Survey;
-import fr.cactus_industries.restservice.Survey.PropositionRDV;
+import fr.cactus_industries.restservice.survey.Survey;
+import fr.cactus_industries.restservice.survey.PropositionRDV;
 import fr.cactus_industries.restservice.login.LogIn;
 import fr.cactus_industries.restservice.login.LoggedTokenInfo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +51,12 @@ public class PropositionController {
     public List<Proposition> listOfPropositionsForSondage(@RequestParam(value="associatedSurvey", defaultValue = "") int associatedSurvey) {
         List<Proposition> list = PropositionRDV.getListOfPropositionsBySondageId(associatedSurvey);
         return list;
+    }
+
+    @GetMapping("/proposition/getSondageById")
+    public Sondage getSondageById(@RequestParam(value="id", defaultValue = "") int id) {
+        Sondage sondage = PropositionRDV.getSondageById(id);
+        return sondage;
     }
 
     @GetMapping("/proposition/remove")

@@ -2,7 +2,7 @@ package fr.cactus_industries.restservice;
 
 import fr.cactus_industries.query.ListSondage;
 import fr.cactus_industries.query.Sondage;
-import fr.cactus_industries.restservice.Survey.Survey;
+import fr.cactus_industries.restservice.survey.Survey;
 import fr.cactus_industries.restservice.login.LogIn;
 import fr.cactus_industries.restservice.login.LoggedTokenInfo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +48,7 @@ public class SondageController {
     }
 
     @GetMapping("/sondage/listOfMySurveys")
-    public Response create(@RequestParam(value="token", defaultValue = "") String token) {
+    public Response listOfMySurveys(@RequestParam(value="token", defaultValue = "") String token) {
         LoggedTokenInfo tokenInfo = LogIn.login(token);
         ListSondage listSondage = Survey.getSurveysFromUser(tokenInfo.getID());
         if(listSondage != null)

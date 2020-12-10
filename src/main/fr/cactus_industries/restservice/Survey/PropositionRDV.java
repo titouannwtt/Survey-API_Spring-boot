@@ -1,8 +1,9 @@
-package fr.cactus_industries.restservice.Survey;
+package fr.cactus_industries.restservice.survey;
 
 import fr.cactus_industries.query.Proposition;
 import fr.cactus_industries.query.Sondage;
 import fr.cactus_industries.restservice.Database;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -38,6 +39,11 @@ public class PropositionRDV {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Sondage getSondageById(int id) {
+        Sondage sondage = Survey.getSurveyById(id);
+        return sondage;
     }
 
     public static List<Proposition> getListOfPropositionsBySondageId(int associatedSurvey) {
