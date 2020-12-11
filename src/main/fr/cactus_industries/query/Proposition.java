@@ -1,10 +1,29 @@
 package fr.cactus_industries.query;
 
+import java.util.List;
+
 public class Proposition {
     private int id;
     private int associatedId;
     private String lieu;
     private String date;
+    private List<Vote> votelist;
+
+    //Constructeur qui créer un sondage localement
+    public Proposition(int id, int associatedId, String lieu, String date, List<Vote> votelist) {
+        this.id = id;
+        this.associatedId = associatedId;
+        this.lieu = lieu;
+        this.date = date;
+        this.votelist = votelist;
+    }
+
+    public Proposition(int id, int associatedId, String lieu, String date) {
+        this.id = id;
+        this.associatedId = associatedId;
+        this.lieu = lieu;
+        this.date = date;
+    }
 
     @Override
     public String toString() {
@@ -13,6 +32,7 @@ public class Proposition {
                 ", associatedId=" + associatedId +
                 ", lieu='" + lieu + '\'' +
                 ", date='" + date + '\'' +
+                ", votelist=" + votelist +
                 '}';
     }
 
@@ -48,11 +68,16 @@ public class Proposition {
         this.date = date;
     }
 
-    //Constructeur qui créer un sondage localement
-    public Proposition(int id, int associatedId, String lieu, String date) {
-        this.id = id;
-        this.associatedId = associatedId;
-        this.lieu = lieu;
-        this.date = date;
+    public List<Vote> getVotelist() {
+        return votelist;
     }
+
+    public void addVote(Vote vote) {
+        this.votelist.add(vote);
+    }
+
+    public void removeVote(Vote vote) {
+        this.votelist.remove(vote);
+    }
+
 }

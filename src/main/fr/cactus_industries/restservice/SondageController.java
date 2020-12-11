@@ -56,6 +56,40 @@ public class SondageController {
         return new FailResponse(FailResponse.Reason.INVALIDTOKEN);
     }
 
+    @GetMapping("/sondage/getAllPublicSurveys")
+    public Response getAllPublicSurveys(/*@RequestParam(value="token", defaultValue = "") String token*/) {
+        //LoggedTokenInfo tokenInfo = LogIn.login(token);
+        ListSondage listSondage = Survey.getAllPublicSurveys();
+        if(listSondage != null)
+            return new MultipleResponse<>(listSondage.getSondages());
+        return new FailResponse(FailResponse.Reason.INVALIDTOKEN);
+    }
+
+    @GetMapping("/sondage/getPublicSurveyById")
+    public Sondage getPublicSurveyById(@RequestParam(value="id", defaultValue = "") int id) {
+        Sondage sondage = Survey.getSurveyById(id);
+        if(sondage.isSondagePrive()==1) {
+            return null;
+        }
+        return sondage;
+    }
+
+    @GetMapping("/sondage/getSurveyById")
+    public Sondage getSurveyById(@RequestParam(value="id", defaultValue = "") int id,
+                                       @RequestParam(value="token", defaultValue = "") String token) {
+        LoggedTokenInfo tokenInfo = LogIn.login(token);
+        Sondage sondage = Survey.getSurveyById(id);
+        if (tokenInfo == null) {
+            return null;
+        } else {
+            if (sondage.getAuthorId() != tokenInfo.getID()) {
+                return null;
+            } else {
+                return sondage;
+            }
+        }
+    }
+
     @GetMapping("/sondage/delete")
     public Response delete(@RequestParam(value="id", defaultValue = "") int id,
                           @RequestParam(value="token", defaultValue = "") String token) {
