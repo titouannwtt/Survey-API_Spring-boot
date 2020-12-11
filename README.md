@@ -35,6 +35,6 @@ PROPOSITION DE VOTE:
 VOTE:
  - /vote/add <associatedProposition> <token>
  - /vote/remove <id> <token>
- ~ /vote/listOfVotesForProposition <associatedProposition>
+ - /vote/listOfVotesForProposition <associatedProposition>
  
 ==========================================
