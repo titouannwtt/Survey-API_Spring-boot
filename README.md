@@ -7,7 +7,7 @@ Projet d'API REST, 4 ème année  cycle ingénieur ESIEA
 
 CONNEXION:
 
- - /LogIn <user> <pass>
+ - /LogIn \<user\> \<pass\>
  - /Renew <token>
  - /TestToken <token>
  
