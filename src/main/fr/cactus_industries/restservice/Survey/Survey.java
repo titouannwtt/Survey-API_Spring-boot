@@ -39,6 +39,28 @@ public class Survey {
         return result;
     }
     
+    public static ListSondage getAllPublicSurveys() {
+        String query = "select id from SONDAGES where sondagePrive='0';";
+        Connection con = Database.getDBConnection();
+        ListSondage LSond = new ListSondage();
+
+        if(con != null)
+            //CONNEXION
+            try (Statement stmt = con.createStatement()) {
+                ResultSet rs = stmt.executeQuery(query);
+                while(rs.next()){
+                    LSond.add(getSurveyById(rs.getInt("id")));
+                }
+                return LSond;
+            }
+            //EN CAS D'ERREUR
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return null;
+
+    }
+    
     
     public static Sondage getSurveyById(int id) {
         String query = "select nom, description, authorId, sondagePrive from SONDAGES where id="+id+";";
@@ -57,7 +79,7 @@ public class Survey {
                 int sondagePrive = rs.getInt("sondagePrive");
                 
                 //CREATION LOCAL DU SONDAGE
-                Sondage sondageSuccess = new Sondage(id, nom, description, authorId, sondagePrive);
+                Sondage sondageSuccess = new Sondage(id, nom, description, authorId, sondagePrive, PropositionRDV.getListOfPropositionsBySondageId(id));
                 return sondageSuccess;
             }
         }
@@ -84,7 +106,9 @@ public class Survey {
                         rs.getString("nom"),
                         rs.getString("description"),
                         userID,
-                        rs.getInt("sondagePrive")));
+                        rs.getInt("sondagePrive"),
+                        PropositionRDV.getListOfPropositionsBySondageId(rs.getInt("id")))
+                );
             }
             return LSond;
         }
@@ -93,7 +117,6 @@ public class Survey {
             e.printStackTrace();
         }
         return null;
-        //ON RETOURNE LE NOMBRE DE SONDAGES DANS LA BDD
     }
     
     public static int createSurvey(String nom, String description, int authorId, int sondagePrive){

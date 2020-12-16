@@ -52,12 +52,6 @@ public class PropositionController {
         return new MultipleResponse<>(PropositionRDV.getListOfPropositionsBySondageId(associatedSurvey));
     }
 
-    @GetMapping("/proposition/getSondageById")
-    public Sondage getSondageById(@RequestParam(value="id", defaultValue = "") int id) {
-        Sondage sondage = PropositionRDV.getSondageById(id);
-        return sondage;
-    }
-
     @GetMapping("/proposition/remove")
     public Response remove(@RequestParam(value="id", defaultValue = "") int id,
                           @RequestParam(value="token", defaultValue = "") String token) {

@@ -2,6 +2,7 @@ package fr.cactus_industries.restservice.survey;
 
 import fr.cactus_industries.query.Proposition;
 import fr.cactus_industries.query.Sondage;
+import fr.cactus_industries.query.Vote;
 import fr.cactus_industries.restservice.Database;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,13 +25,8 @@ public class PropositionRDV {
         try (Statement stmt = con.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             if(rs.next()) {
-                //RECUPERATION DES DONNEES
-                int associatedSurvey = rs.getInt("associatedSurvey");
-                String lieu = rs.getString("lieu");
-                String date = rs.getString("date");
-                
-                //CREATION LOCAL DU SONDAGE
-                Proposition proposition = new Proposition(id, associatedSurvey, lieu, date);
+                List<Vote> votelist = Voting.getVotesOfProposition(id);
+                Proposition proposition = new Proposition(id, rs.getInt("associatedSurvey"), rs.getString("lieu"), rs.getString("date"), votelist);
                 return proposition;
             }
         }
@@ -41,22 +37,20 @@ public class PropositionRDV {
         return null;
     }
 
-    public static Sondage getSondageById(int id) {
-        Sondage sondage = Survey.getSurveyById(id);
-        return sondage;
-    }
-
     public static List<Proposition> getListOfPropositionsBySondageId(int associatedSurvey) {
         String query = "select id, associatedSurvey, lieu, date from RDV where associatedSurvey='"+associatedSurvey+"';";
 
         Connection con = Database.getDBConnection();
         List<Proposition> listOfPropositions = new ArrayList<>();
+        int idProposition;
         if(con != null)
             //CONNEXION
             try (Statement stmt = con.createStatement()) {
                 ResultSet rs = stmt.executeQuery(query);
                 while (rs.next()) {
-                    Proposition proposition = new Proposition(rs.getInt("id"), rs.getInt("associatedSurvey"), rs.getString("lieu"), rs.getString("date"));
+                    idProposition = rs.getInt("id");
+                    List<Vote> votelist = Voting.getVotesOfProposition(idProposition);
+                    Proposition proposition = new Proposition(idProposition, rs.getInt("associatedSurvey"), rs.getString("lieu"), rs.getString("date"), votelist);
                     //System.out.println("Proposition ID : "+proposition.getId());
                     //System.out.println("Sondage ID of Proposition : "+proposition.getAssociatedId());
                     listOfPropositions.add(proposition);

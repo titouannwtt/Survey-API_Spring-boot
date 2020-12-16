@@ -11,17 +11,19 @@ public class Sondage {
     private int sondagePrive;
     private List<Proposition> propositionList;
 
-    public List<Proposition> getPropositionList() {
-        return propositionList;
+
+    @Override
+    public String toString() {
+        return "Sondage{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", description='" + description + '\'' +
+                ", authorId=" + authorId +
+                ", sondagePrive=" + sondagePrive +
+                ", propositionList=" + propositionList +
+                '}';
     }
 
-    public void addProposition(Proposition proposition) {
-        this.propositionList.add(proposition);
-    }
-
-    public void removeProposition(Proposition proposition) {
-        this.propositionList.remove(proposition);
-    }
 
     //Constructeur qui créer un sondage localement
     public Sondage(int id, String nom, String description, int authorId, int sondagePrive) {
@@ -32,11 +34,21 @@ public class Sondage {
         this.sondagePrive = sondagePrive;
     }
 
-    public Sondage(int id, String nom, String description, int authorId) {
+    public Sondage(int id, String nom, String description, int authorId, int sondagePrive, List<Proposition> propositionList) {
         this.id = id;
         this.nom = nom;
         this.description = description;
         this.authorId = authorId;
+        this.sondagePrive = sondagePrive;
+        this.propositionList = propositionList;
+    }
+
+    public Sondage(int id, String nom, String description, int authorId, List<Proposition> propositionList) {
+        this.id = id;
+        this.nom = nom;
+        this.description = description;
+        this.authorId = authorId;
+        this.propositionList = propositionList;
     }
 
     public int getId() {
@@ -77,6 +89,18 @@ public class Sondage {
 
     public void setSondagePrive(int sondagePrive) {
         this.sondagePrive = sondagePrive;
+    }
+
+    public List<Proposition> getPropositionList() {
+        return propositionList;
+    }
+
+    public void addProposition(Proposition proposition) {
+        this.propositionList.add(proposition);
+    }
+
+    public void removeProposition(Proposition proposition) {
+        this.propositionList.remove(proposition);
     }
 
 }
