@@ -33,6 +33,11 @@ public abstract class LogResponse {
         }
         return new FailResponse(FailResponse.Reason.INVALIDTOKEN);
     }
-    
+
+    public static Response register(String mail, String user, String pass) {
+        System.out.println("mail: "+mail+"\nuser: "+user+"\npass: "+pass);
+        return LogIn.register(mail, user, pass);
+    }
+
     public abstract String getStatus();
 }

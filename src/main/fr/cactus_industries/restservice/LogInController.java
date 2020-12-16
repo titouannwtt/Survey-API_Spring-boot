@@ -19,6 +19,14 @@ public class LogInController {
         
         return LogResponse.tryRenew(token);
     }
+
+    @GetMapping("/Register")
+    public Response Register(@RequestParam(value = "mail", defaultValue = "") String mail,
+                             @RequestParam(value = "user", defaultValue = "") String user,
+                             @RequestParam(value = "pass", defaultValue = "") String pass){
+
+        return LogResponse.register(mail, user, pass);
+    }
     
     @GetMapping("/TestToken")
     public Response TestToken(@RequestParam(value = "token", defaultValue = "") String token){

@@ -48,9 +48,8 @@ public class PropositionController {
     }
 
     @GetMapping("/proposition/listOfPropositionsForSondage")
-    public List<Proposition> listOfPropositionsForSondage(@RequestParam(value="associatedSurvey", defaultValue = "") int associatedSurvey) {
-        List<Proposition> list = PropositionRDV.getListOfPropositionsBySondageId(associatedSurvey);
-        return list;
+    public Response listOfPropositionsForSondage(@RequestParam(value="associatedSurvey", defaultValue = "") int associatedSurvey) {
+        return new MultipleResponse<>(PropositionRDV.getListOfPropositionsBySondageId(associatedSurvey));
     }
 
     @GetMapping("/proposition/getSondageById")
