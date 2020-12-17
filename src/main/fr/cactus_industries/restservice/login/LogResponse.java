@@ -3,10 +3,7 @@ package fr.cactus_industries.restservice.login;
 import fr.cactus_industries.restservice.FailResponse;
 import fr.cactus_industries.restservice.Response;
 
-public abstract class LogResponse {
-    
-    protected String status;
-    
+public class LogResponse {
     
     public static Response tryLogin(String user, String pass){
         // Try connection
@@ -16,6 +13,15 @@ public abstract class LogResponse {
         }
         
         return new FailResponse(FailResponse.Reason.BADLOGIN);
+    }
+
+    public static Response getAccountInfo(String token){
+        LoggedTokenInfo tokenInfo = TokenHandler.getIDFromToken(token);
+        if(tokenInfo != null){
+            return LogIn.getAccountInfo(tokenInfo.getID());
+        }
+        
+        return new FailResponse(FailResponse.Reason.INVALIDTOKEN);
     }
     
     public static Response tryRenew(String token) {
@@ -38,6 +44,4 @@ public abstract class LogResponse {
         System.out.println("mail: "+mail+"\nuser: "+user+"\npass: "+pass);
         return LogIn.register(mail, user, pass);
     }
-
-    public abstract String getStatus();
 }

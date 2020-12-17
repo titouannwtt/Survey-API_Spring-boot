@@ -6,6 +6,7 @@ public class FailResponse extends Response {
         GENERIC("ERROR", "An error occurred (no more info)"),
         DUPLICATELOGIN("ERROR", "Login already exist"),
         BADLOGIN("BAD LOGIN", "Wrong User or Password"),
+        ACCOUNTNOTFOUND("ACCOUNT NOT FOUND", "This account hasn't been found"),
         INVALIDMAIL("INVALID MAIL","The mail entered is not a valid mail"),
         INVALIDUSER("INVALID USER","The username entered doesn't match the requirements"),
         INVALIDPASS("INVALID PASS","The pass entered doesn't match the requirements"),

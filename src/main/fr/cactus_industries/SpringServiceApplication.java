@@ -1,13 +1,13 @@
-package fr.cactus_industries.restservice;
+package fr.cactus_industries;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RestServiceApplication {
+public class SpringServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RestServiceApplication.class, args);
+        SpringApplication.run(SpringServiceApplication.class, args);
     }
 
 }

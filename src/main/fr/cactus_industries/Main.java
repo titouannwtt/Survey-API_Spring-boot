@@ -1,7 +1,6 @@
 package fr.cactus_industries;
 
 import fr.cactus_industries.restservice.Database;
-import fr.cactus_industries.restservice.RestServiceApplication;
 
 import java.sql.Connection;
 
@@ -17,7 +16,7 @@ public class Main {
             System.out.println("Connection to the Database could not be established for the moment.");
         
         System.out.println("Deploying REST API...");
-        RestServiceApplication.main(args);
+        SpringServiceApplication.main(args);
         
     }
     

@@ -18,9 +18,9 @@ public class LogIn {
     public static LoggedTokenInfo login(String User, String pass){
         
         String query = "SELECT id FROM USERS where login='"+User+"' AND pass='"+digestPass(pass)+"';";
-        
+
         Connection con = Database.getDBConnection();
-        
+
         if(con != null)
         // CONNEXION
         try (Statement stmt = con.createStatement()){
@@ -46,6 +46,24 @@ public class LogIn {
                 TokenHandler.deleteToken(tokenInfo);
         
         return null;
+    }
+
+    public static Response getAccountInfo(int ID){
+        String query = "SELECT login, mail FROM USERS where id='"+ID+"';";
+        
+        Connection con = Database.getDBConnection();
+        
+        if(con != null)
+            // CONNEXION
+            try (Statement stmt = con.createStatement()){
+                ResultSet rs = stmt.executeQuery(query);
+                if(rs.next()){
+                    return new AccountResponse(rs.getString("mail"), rs.getString("login"));
+                }
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+        return new FailResponse(FailResponse.Reason.ACCOUNTNOTFOUND);
     }
 
     public static Response register(String mail, String user, String pass){

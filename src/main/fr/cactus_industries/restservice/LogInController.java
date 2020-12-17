@@ -14,6 +14,12 @@ public class LogInController {
         return LogResponse.tryLogin(user, pass);
     }
     
+    @GetMapping("/AccountInfo")
+    public Response AccountInfo(@RequestParam(value="token", defaultValue = "") String token){
+        return LogResponse.getAccountInfo(token);
+    }
+    
+    
     @GetMapping("/Renew")
     public Response Renew(@RequestParam(value = "token", defaultValue = "") String token){
         
