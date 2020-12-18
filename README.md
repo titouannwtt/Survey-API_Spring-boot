@@ -1,5 +1,7 @@
 # RESTProject
 Projet d'API REST, 4 ème année  cycle ingénieur ESIEA
+Titouan Wattelet
+Clément Azan
 
 # BASE URL : https://apiweb.cactus-industries.fr/ProgWeb/
 
