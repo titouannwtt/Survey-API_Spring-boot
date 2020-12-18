@@ -118,6 +118,8 @@ Générique:
  - ERROR: An error occurred (no more info)
  - TOKEN INVALID: Token has expired or doesn't exist
  - NO AUTHOR: Author not found
+
+==========================================
  
 Connexion/Compte:
  - ERROR: Login already exist
@@ -128,12 +130,18 @@ Connexion/Compte:
  - INVALID PASS: The pass entered doesn't match the requirements
  - NO CHANGE: No change requested
  
+==========================================
+
 Sondage:
  - INVALID SONDAGE ID: ID of sondage not found
  - PERMISSION DENIED: You are not the author of this sondage, you can't modified it
+ 
+==========================================
 
 Proposition vote:
  - INVALID PROPOSITION ID: ID of proposition not found
+
+==========================================
 
 Vote:
  - INVALID VOTE ID: ID of vote not found
