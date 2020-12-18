@@ -5,7 +5,7 @@ Projet d'API REST, 4 ème année  cycle ingénieur ESIEA
 
 ------------------------------------------------------------
 
-#ACCES BDD pour consultation :
+# ACCES BDD pour consultation :
 
  - Page phpmyadmin : http://cerenity.net/phpmyadmin/sql.php?db=basededonnees
  - user : progweb
