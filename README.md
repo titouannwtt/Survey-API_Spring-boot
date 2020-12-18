@@ -75,26 +75,38 @@ CONNEXION/COMPTE:
 SONDAGE :
 
  - /sondage/create \<nom\> \<description\> \<token\> \<prive\>
+ - Res: {"status"=str}
  - /sondage/delete \<id\> \<token\>
+ - Res: {"status"=str}
  - /sondage/getPublicSurveyById \<id\>
+ - Res: {"id"=int,"nom"=str,"description"=str,"authorId"=int,"sondagePrive"=int,"propositionList"=\[{"id"=int,"associatedId"=int,"lieu"=str,"date"=str,"votelist"=\[{"id"=int,"associatedProposition"=int,"associatedUser"=int},...\]},...]}
  - /sondage/getMySurveyById <id> \<token\>
+ - Res: {"id"=int,"nom"=str,"description"=str,"authorId"=int,"sondagePrive"=int,"propositionList"=\[{"id"=int,"associatedId"=int,"lieu"=str,"date"=str,"votelist"=\[{"id"=int,"associatedProposition"=int,"associatedUser"=int},...\]},...]}
  - /sondage/listOfMySurveys \<token\>
+ - Res: {"status"=str,"list"=\[{"id"=int,"nom"=str,"description"=str,"authorId"=int,"sondagePrive"=int,"propositionList"=\[{"id"=int,"associatedId"=int,"lieu"=str,"date"=str,"votelist"=\[{"id"=int,"associatedProposition"=int,"associatedUser"=int},...\]},...\]}
  - /sondage/getAllPublicSurveys
+ - Res: {"status"=str,"list"=\[{"id"=int,"nom"=str,"description"=str,"authorId"=int,"sondagePrive"=int,"propositionList"=\[{"id"=int,"associatedId"=int,"lieu"=str,"date"=str,"votelist"=\[{"id"=int,"associatedProposition"=int,"associatedUser"=int},...\]},...\]}
  
 ===========================================
 
 PROPOSITION DE VOTE:
 
  - /proposition/add \<associatedSurvey\> \<lieu\> \<date\> \<token\>
+ - Res: {"status"=str}
  - /proposition/remove \<id\> \<token\>
+ - Res: {"status"=str}
  - /proposition/listOfPropositionsForSondage \<associatedSurvey\>
+ - Res: {"status"=str,"list"=\[{"id"=int,"associatedId"=int,"lieu"=str,"date"=str,"votelist"=\[{"id"=int,"associatedProposition"=int,"associatedUser"=int},...\]},...\]}
  
 ===========================================
 
 VOTE:
  - /vote/add \<associatedProposition\> \<token\>
+ - Res: {"status"=str}
  - /vote/remove \<id\> \<token\>
+ - Res: {"status"=str}
  - /vote/listOfVotesForProposition \<associatedProposition\>
+ - Res: {\[{"id"=int,"associatedProposition"=int,"associatedUser"=int},...\]}
 
 # Les Erreurs
 
