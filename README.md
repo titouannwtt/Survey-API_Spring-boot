@@ -1,6 +1,18 @@
 # RESTProject
 Projet d'API REST, 4 ème année  cycle ingénieur ESIEA
 
+# BASE URL : https://apiweb.cactus-industries.fr/ProgWeb/
+
+# Exemple d'utilisation : 
+Inscription :
+- https://apiweb.cactus-industries.fr/ProgWeb/Register?mail=etudiantTest@esiea.fr&user=etudiantEsiea&pass=Esiea2020
+
+Connexion :
+- https://apiweb.cactus-industries.fr/ProgWeb/LogIn?user=etudiantEsiea&pass=Esiea2020
+On recupère le token que nous donne l'API
+
+
+
 #Liste des requêtes API disponibles : 
 
 ==========================================
