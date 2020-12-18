@@ -1,6 +1,9 @@
 package fr.cactus_industries.restservice;
 
 import fr.cactus_industries.restservice.login.LogResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LogInController {
     
-    @GetMapping("/LogIn")
+    @ApiResponses(value = {})
+    @GetMapping(value = "/LogIn")
     public Response LogIn(@RequestParam(value="user", defaultValue = "") String user,
                              @RequestParam(value = "pass", defaultValue = "") String pass){
         return LogResponse.tryLogin(user, pass);
