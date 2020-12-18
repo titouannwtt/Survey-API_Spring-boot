@@ -3,6 +3,16 @@ Projet d'API REST, 4 ème année  cycle ingénieur ESIEA
 
 # BASE URL : https://apiweb.cactus-industries.fr/ProgWeb/
 
+------------------------------------------------------------
+
+#ACCES BDD pour consultation :
+
+ - Page phpmyadmin : http://cerenity.net/phpmyadmin/sql.php?db=basededonnees
+ - user : progweb
+ - mdp : Esiea2020 
+
+------------------------------------------------------------
+
 # Exemple d'utilisation : 
 Consultation des sondages existants :
 - https://apiweb.cactus-industries.fr/ProgWeb/sondage/getAllPublicSurveys
@@ -39,8 +49,9 @@ On retourne consulter la liste des sondages existants, on constate que notre son
 Une page html a été mise en place pour afficher la liste des sondages :
 https://apiweb.cactus-industries.fr/test.html
 
+---------------------------------------------------
 
-#Liste des requêtes API disponibles : 
+# Liste des requêtes API disponibles : 
 
 ==========================================
 
@@ -77,11 +88,4 @@ VOTE:
  - /vote/add \<associatedProposition\> \<token\>
  - /vote/remove \<id\> \<token\>
  - /vote/listOfVotesForProposition \<associatedProposition\>
- 
-==========================================
 
-#ACCES DISTANT BDD :
-
- - Page phpmyadmin : http://cerenity.net/phpmyadmin/sql.php?db=basededonnees
- - user : progweb
- - mdp : Esiea2020 
