@@ -34,6 +34,15 @@ public class LogInController {
         return LogResponse.register(mail, user, pass);
     }
     
+    @GetMapping("/AccountUpdate")
+    public Response AccountUpdate(@RequestParam(value = "token", defaultValue = "") String token,
+                                  @RequestParam(value = "mail", defaultValue = "") String mail,
+                                  @RequestParam(value = "user", defaultValue = "") String user,
+                                  @RequestParam(value = "pass", defaultValue = "") String pass,
+                                  @RequestParam(value = "newpass", defaultValue = "") String newPass){
+        return LogResponse.changeAccountInfo(token, mail, user, pass, newPass);
+    }
+    
     @GetMapping("/TestToken")
     public Response TestToken(@RequestParam(value = "token", defaultValue = "") String token){
     

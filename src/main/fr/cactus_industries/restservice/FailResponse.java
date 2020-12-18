@@ -4,6 +4,7 @@ public class FailResponse extends Response {
 
     public enum Reason {
         GENERIC("ERROR", "An error occurred (no more info)"),
+        NOCHANGE("NO CHANGE", "No change requested"),
         DUPLICATELOGIN("ERROR", "Login already exist"),
         BADLOGIN("BAD LOGIN", "Wrong User or Password"),
         ACCOUNTNOTFOUND("ACCOUNT NOT FOUND", "This account hasn't been found"),

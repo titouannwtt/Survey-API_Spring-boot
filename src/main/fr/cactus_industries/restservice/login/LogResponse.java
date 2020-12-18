@@ -44,4 +44,15 @@ public class LogResponse {
         System.out.println("mail: "+mail+"\nuser: "+user+"\npass: "+pass);
         return LogIn.register(mail, user, pass);
     }
+    
+    public static Response changeAccountInfo(String token, String mail, String user, String pass, String newPass) {
+        LoggedTokenInfo tokenInfo = LogIn.login(token);
+        if(tokenInfo != null){
+            if(mail.equals("") && user.equals("") && newPass.equals(""))
+                return new FailResponse(FailResponse.Reason.NOCHANGE);
+            return LogIn.changeAccountInfo(tokenInfo.getID(), pass, mail, user, newPass);
+        }
+        
+        return new FailResponse(FailResponse.Reason.INVALIDTOKEN);
+    }
 }
