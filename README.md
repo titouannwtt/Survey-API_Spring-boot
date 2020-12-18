@@ -58,10 +58,17 @@ https://apiweb.cactus-industries.fr/test.html
 CONNEXION/COMPTE:
 
  - /LogIn \<user\> \<pass\>
+ - Res: {"status"=str,"token"=str,"expiration"=long}
  - /Renew \<token\>
+ - Res: {"status"=str,"token"=str,"expiration"=long}
  - /TestToken \<token\>
+ - Res: {"status"=str,"token"=str,"expiration"=long}
  - /Register \<mail\> \<user\> \<pass\>
+ - Res: {"status"=str}
  - /AccountInfo \<token\>
+ - Res: {"status"=str,"mail"=str,"login"=str}
+ - /AccountUpdate \<token\> \<pass\> \[mail\] \[user\] \[newPass\]
+ - Res: {"status"=str}
  
 ==========================================
 
@@ -89,3 +96,30 @@ VOTE:
  - /vote/remove \<id\> \<token\>
  - /vote/listOfVotesForProposition \<associatedProposition\>
 
+# Les Erreurs
+
+Générique:
+ - ERROR: An error occurred (no more info)
+ - TOKEN INVALID: Token has expired or doesn't exist
+ - NO AUTHOR: Author not found
+ 
+Connexion/Compte:
+ - ERROR: Login already exist
+ - BAD LOGIN: Wrong User or Password
+ - ACCOUNT NOT FOUND: This account hasn't been found
+ - INVALID MAIL: The mail entered is not a valid mail
+ - INVALID USER: The username entered doesn't match the requirements
+ - INVALID PASS: The pass entered doesn't match the requirements
+ - NO CHANGE: No change requested
+ 
+Sondage:
+ - INVALID SONDAGE ID: ID of sondage not found
+ - PERMISSION DENIED: You are not the author of this sondage, you can't modified it
+
+Proposition vote:
+ - INVALID PROPOSITION ID: ID of proposition not found
+
+Vote:
+ - INVALID VOTE ID: ID of vote not found
+ - ALREADY VOTED: You can't vote because you have already voted for this sondage
+ 
